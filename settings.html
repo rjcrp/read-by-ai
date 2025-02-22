@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text-to-Speech Bookmarklet Setup</title>
+  <style>
+    body { padding: 20px; font-family: Arial, sans-serif; }
+    input { width: 100%; padding: 8px; margin: 10px 0; }
+    button { padding: 10px 20px; }
+    p { margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <h1>Setup Your Text-to-Speech Bookmarklet</h1>
+  <label for="apiKey">Enter your 11 Labs API Key:</label>
+  <input type="text" id="apiKey" placeholder="Your API key">
+  <button onclick="saveApiKey()">Save API Key</button>
+  <p>After saving, bookmark this page, then edit the bookmark and replace its URL with the code below:</p>
+  <pre id="bookmarkletCode"></pre>
+  <script>
+    function saveApiKey() {
+      const apiKey = document.getElementById('apiKey').value;
+      if (apiKey) {
+        localStorage.setItem('elevenLabsApiKey', apiKey);
+        alert('API Key saved! Now bookmark this page and update its URL with the code below.');
+        generateBookmarkletCode();
+      } else {
+        alert('Please enter an API key.');
+      }
+    }
+
+    function generateBookmarkletCode() {
+      const bookmarklet = `javascript:(function(){var s=document.createElement('script');s.src='https://your-static-host.com/readability.js';s.onload=function(){var a=new Readability(document).parse();var t=a?a.textContent:document.body.innerText;var k=localStorage.getItem('elevenLabsApiKey');if(!k){alert('Please set your API key at https://your-static-host.com/settings.html');return;}fetch('https://api.elevenlabs.io/v1/text-to-speech/STREAM', {method:'POST',headers:{'Content-Type':'application/json','xi-api-key':k},body:JSON.stringify({text:t,voice_id:'default-voice-id'})}).then(r=>r.json()).then(d=>{if(d.audio_url){window.open(d.audio_url,'_blank');}else{alert('Failed to generate audio');}}).catch(e=>{console.error(e);alert('Error generating audio');});};document.head.appendChild(s);})();`;
+      document.getElementById('bookmarkletCode').textContent = bookmarklet;
+    }
+  </script>
+</body>
+</html>
