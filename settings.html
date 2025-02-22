@@ -31,7 +31,7 @@
     }
 
     function generateBookmarkletCode() {
-      const bookmarklet = `javascript:(function(){var s=document.createElement('script');s.src='https://your-static-host.com/readability.js';s.onload=function(){var a=new Readability(document).parse();var t=a?a.textContent:document.body.innerText;var k=localStorage.getItem('elevenLabsApiKey');if(!k){alert('Please set your API key at https://your-static-host.com/settings.html');return;}fetch('https://api.elevenlabs.io/v1/text-to-speech/STREAM', {method:'POST',headers:{'Content-Type':'application/json','xi-api-key':k},body:JSON.stringify({text:t,voice_id:'default-voice-id'})}).then(r=>r.json()).then(d=>{if(d.audio_url){window.open(d.audio_url,'_blank');}else{alert('Failed to generate audio');}}).catch(e=>{console.error(e);alert('Error generating audio');});};document.head.appendChild(s);})();`;
+      const bookmarklet = `javascript:(function(){var s=document.createElement('script');s.src='https://rjcrp.github.io/read-by-ai/readability.js';s.onload=function(){var a=new Readability(document).parse();var t=a?a.textContent:document.body.innerText;var k=localStorage.getItem('elevenLabsApiKey');if(!k){alert('Please set your API key at https://rjcrp.github.io/read-by-ai/settings.html');return;}fetch('https://api.elevenlabs.io/v1/text-to-speech/STREAM', {method:'POST',headers:{'Content-Type':'application/json','xi-api-key':k},body:JSON.stringify({text:t,voice_id:'default-voice-id'})}).then(r=>r.json()).then(d=>{if(d.audio_url){window.open(d.audio_url,'_blank');}else{alert('Failed to generate audio');}}).catch(e=>{console.error(e);alert('Error generating audio');});};document.head.appendChild(s);})();`;
       document.getElementById('bookmarkletCode').textContent = bookmarklet;
     }
   </script>
